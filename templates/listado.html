@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Listado de Empresas</h2>
+    <a href="{{ url_for('crear_empresa') }}" class="btn btn-success">+ Nueva Empresa</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Comercial</th>
+                    <th>Ciudad</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empresa in empresas %}
+                <tr>
+                    <td>{{ empresa.id }}</td>
+                    <td><strong>{{ empresa.nombre_comercial }}</strong></td>
+                    <td>{{ empresa.ciudad }}</td>
+                    <td>
+                        <span class="badge bg-info text-dark">{{ empresa.estatus_empresa }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('detalle_empresa', id=empresa.id) }}" class="btn btn-sm btn-outline-primary">Ver Detalles</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No hay empresas registradas.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

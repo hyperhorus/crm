@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Directorio de Contactos</h2>
+    <a href="{{ url_for('crear_contacto') }}" class="btn btn-success">+ Nuevo Contacto</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>Nombre Completo</th>
+                <th>Empresa</th>
+                <th>Puesto</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for contacto in contactos %}
+            <tr>
+                <td>
+                    <div class="fw-bold">{{ contacto.nombre }} {{ contacto.apellido }}</div>
+                </td>
+                <td>
+                    <!-- This links back to the company detail page -->
+                    <a href="{{ url_for('detalle_empresa', id=contacto.empresa.id) }}" class="text-decoration-none">
+                        {{ contacto.empresa.nombre_comercial }}
+                    </a>
+                </td>
+                <td>{{ contacto.puesto }}</td>
+                <td>{{ contacto.email }}</td>
+                <td>{{ contacto.telefono }}</td>
+                <!-- Inside templates/contactos_listado.html -->
+                <td>
+                    <a href="{{ url_for('editar_contacto', id=contacto.id) }}" class="btn btn-sm btn-outline-secondary">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center text-muted">No hay contactos registrados.</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

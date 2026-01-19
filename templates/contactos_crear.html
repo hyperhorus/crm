@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h4>Registrar Nuevo Contacto</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('crear_contacto') }}">
+
+                    <!-- Select Company -->
+                    <div class="mb-3">
+                        <label class="form-label">Empresa Perteneciente</label>
+                        <select name="empresa_id" class="form-select" required>
+                            <option value="" disabled {% if not preselected_id %}selected{% endif %}>Selecciona una
+                                empresa...
+                            </option>
+
+                            {% for empresa in empresas %}
+                            <!-- Logic to check if this is the pre-selected company -->
+                            <option value="{{ empresa.id }}"
+                                    {% if preselected_id and preselected_id|int== empresa.id %}selected{% endif %}>
+                                {{ empresa.nombre_comercial }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">El contacto debe estar asociado a una empresa existente.</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" name="nombre" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Apellido</label>
+                            <input type="text" name="apellido" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Puesto / Cargo</label>
+                            <input type="text" name="puesto" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Departamento</label>
+                            <input type="text" name="departamento" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" name="telefono" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Comentarios</label>
+                        <textarea name="comentarios" class="form-control" rows="2"></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar Contacto</button>
+                        <a href="{{ url_for('ver_contactos') }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

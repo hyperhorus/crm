@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm text-center">
+    <h1 class="display-5 fw-bold">Bienvenido al CRM</h1>
+    <p class="col-md-8 fs-4 mx-auto">Administra tus empresas, contactos y seguimiento de ventas de forma eficiente.</p>
+    <a href="{{ url_for('ver_empresas') }}" class="btn btn-primary btn-lg" type="button">Ver Directorio</a>
+</div>
+{% endblock %}
