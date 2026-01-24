@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Nuevo Seguimiento para Empresa #{{ empresa_id }}</h2>
+    <form method="POST">
+        <label>Fecha Contacto:</label><input type="date" name="fecha_contacto" required><br>
+        <label>Tipo:</label><input type="text" name="tipo_contacto" placeholder="Llamada, Email..."><br>
+        <label>Etapa Venta:</label><input type="text" name="etapa_venta"><br>
+        <label>Resultado:</label><input type="text" name="resultado"><br>
+        <label>Próximo Paso:</label><input type="text" name="proximo_paso"><br>
+        <label>Fecha Prox. Contacto:</label><input type="date" name="fecha_proximo_contacto"><br>
+        <label>Probabilidad (%):</label><input type="number" name="probabilidad_cierre"><br>
+        <label>Responsable:</label><input type="text" name="responsable"><br>
+        <label>Comentarios:</label><textarea name="comentarios"></textarea><br>
+        <button type="submit">Guardar Seguimiento</button>
+    </form>
+</body>
+</html>

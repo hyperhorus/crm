@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h4>
+                    {% if seguimiento %}Editar Seguimiento{% else %}Nuevo Seguimiento{% endif %}
+                </h4>
+                <p class="text-muted mb-0">Empresa: {{ empresa.nombre_comercial }}</p>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha Contacto</label>
+                            <input type="date" name="fecha_contacto" class="form-control" 
+                                   value="{{ seguimiento.fecha_contacto if seguimiento else '' }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Contacto (Persona)</label>
+                            <select name="contacto_id" class="form-select">
+                                <option value="">-- General / Sin contacto específico --</option>
+                                {% for c in empresa.contactos %}
+                                    <option value="{{ c.id }}" 
+                                        {% if seguimiento and seguimiento.contacto_id == c.id %}selected{% endif %}>
+                                        {{ c.nombre }} {{ c.apellido }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo Contacto</label>
+                            <select name="tipo_contacto" class="form-select">
+                                {% set tipo = seguimiento.tipo_contacto if seguimiento else '' %}
+                                <option value="Llamada" {% if tipo=='Llamada' %}selected{% endif %}>Llamada</option>
+                                <option value="Email" {% if tipo=='Email' %}selected{% endif %}>Email</option>
+                                <option value="Reunión" {% if tipo=='Reunión' %}selected{% endif %}>Reunión</option>
+                                <option value="WhatsApp" {% if tipo=='WhatsApp' %}selected{% endif %}>WhatsApp</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Etapa Venta</label>
+                            <select name="etapa_venta" class="form-select">
+                                {% set etapa = seguimiento.etapa_venta if seguimiento else '' %}
+                                <option value="Prospección" {% if etapa=='Prospección' %}selected{% endif %}>Prospección</option>
+                                <option value="Negociación" {% if etapa=='Negociación' %}selected{% endif %}>Negociación</option>
+                                <option value="Cierre" {% if etapa=='Cierre' %}selected{% endif %}>Cierre</option>
+                                <option value="Post-Venta" {% if etapa=='Post-Venta' %}selected{% endif %}>Post-Venta</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Probabilidad (%)</label>
+                            <input type="number" name="probabilidad_cierre" class="form-control" 
+                                   value="{{ seguimiento.probabilidad_cierre if seguimiento else 0 }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Resultado / Resumen</label>
+                        <input type="text" name="resultado" class="form-control" 
+                               value="{{ seguimiento.resultado if seguimiento else '' }}">
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Próximo Paso</label>
+                            <input type="text" name="proximo_paso" class="form-control" 
+                                   value="{{ seguimiento.proximo_paso if seguimiento else '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Fecha Próximo Contacto</label>
+                            <input type="date" name="fecha_proximo_contacto" class="form-control" 
+                                   value="{{ seguimiento.fecha_proximo_contacto if seguimiento else '' }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Responsable</label>
+                        <input type="text" name="responsable" class="form-control" 
+                               value="{{ seguimiento.responsable if seguimiento else '' }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Comentarios Detallados</label>
+                        <textarea name="comentarios" class="form-control" rows="3">{{ seguimiento.comentarios if seguimiento else '' }}</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="{{ url_for('detalle_empresa', id=empresa.id) }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

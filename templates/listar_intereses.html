@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Intereses de: {{ empresa.nombre if empresa else 'Empresa' }}</h1>
+    <a href="{{ url_for('crear_interes', empresa_id=empresa.id) }}"> + Agregar Interés</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Volumen</th>
+                <th>Urgencia</th>
+                <th>Fecha Probable</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in intereses %}
+            <tr>
+                <td>{{ item.producto }}</td>
+                <td>{{ item.volumen_estimado }}</td>
+                <td>{{ item.nivel_urgencia }}</td>
+                <td>{{ item.fecha_probable }}</td>
+                <td>
+                    <a href="#">Editar</a> |
+                    <a href="#" style="color:red;">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<h2>Editar Interés Comercial</h2>
+<form method="POST">
+    <label>Producto:</label>
+    <input type="text" name="producto" value="{{ i.producto }}"><br>
+
+    <label>Tipo Interés:</label>
+    <select name="tipo_interes">
+        <option value="Compra" {% if i.tipo_interes == 'Compra' %}selected{% endif %}>Compra</option>
+        <option value="Servicio" {% if i.tipo_interes == 'Servicio' %}selected{% endif %}>Servicio</option>
+    </select><br>
+
+    <label>Volumen Estimado:</label>
+    <input type="number" name="volumen_estimado" value="{{ i.volumen_estimado }}"><br>
+
+    <label>Nivel Urgencia:</label>
+    <input type="text" name="nivel_urgencia" value="{{ i.nivel_urgencia }}"><br>
+
+    <label>Comentarios:</label>
+    <textarea name="comentarios">{{ i.comentarios }}</textarea><br>
+
+    <button type="submit">Actualizar Cambios</button>
+    <a href="{{ url_for('listar_intereses', empresa_id=i.empresa_id) }}">Cancelar</a>
+</form>

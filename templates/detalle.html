@@ -7,77 +7,198 @@
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">{{ empresa.nombre_comercial }}</h5>
+                <small>{{ empresa.giro }}</small>
             </div>
             <div class="card-body">
-                <p><strong>Razón Social:</strong> {{ empresa.razon_social }}</p>
-                <p><strong>Giro:</strong> {{ empresa.giro }}</p>
-                <p><strong>Ciudad:</strong> {{ empresa.ciudad }}</p>
-                <p><strong>Web:</strong>
+                <!-- Status & Basic -->
+                <div class="mb-3">
+                    <span class="badge bg-{{ 'success' if empresa.estatus_empresa == 'Activo' else 'secondary' }} fs-6">
+                        {{ empresa.estatus_empresa }}
+                    </span>
+                    <br>
+                    <small class="text-muted">Alta: {{ empresa.fecha_alta }}</small>
+                </div>
+
+                <p class="mb-1"><strong>Razón Social:</strong> <br>{{ empresa.razon_social or 'N/A' }}</p>
+                <p class="mb-1"><strong>Sitio Web:</strong> <br>
                     {% if empresa.sitio_web %}
                     <a href="http://{{ empresa.sitio_web }}" target="_blank">{{ empresa.sitio_web }}</a>
-                    {% else %}
-                    <span class="text-muted">No registrado</span>
-                    {% endif %}
+                    {% else %} - {% endif %}
                 </p>
-                <p><strong>Presupuesto:</strong> ${{ empresa.presupuesto_estimado }}</p>
-                <p><strong>Estatus:</strong> <span class="badge bg-secondary">{{ empresa.estatus_empresa }}</span></p>
+                <p class="mb-1"><strong>LinkedIn:</strong> <br>
+                    {% if empresa.linkedin_empresa %}
+                    <a href="{{ empresa.linkedin_empresa }}" target="_blank">Ver Perfil</a>
+                    {% else %} - {% endif %}
+                </p>
 
                 <hr>
 
-                <!-- EDIT BUTTON IMPLEMENTED -->
-                <a href="{{ url_for('editar_empresa', id=empresa.id) }}" class="btn btn-outline-primary w-100">
-                    ✏️ Editar Información
-                </a>
+                <h6 class="text-primary">Ubicación</h6>
+                <p>
+                    {{ empresa.ciudad }}, {{ empresa.estado }}<br>
+                    {{ empresa.pais }}
+                </p>
+
+                <hr>
+
+                <h6 class="text-primary">Perfil Estratégico</h6>
+                <ul class="list-unstyled">
+                    <li><strong>Tamaño:</strong> {{ empresa.tamano_empresa }}</li>
+                    <li><strong>Presupuesto:</strong> ${{ empresa.presupuesto_estimado }}</li>
+                    <li><strong>Prioridad:</strong> {{ empresa.prioridad_compra }}</li>
+                    <li><strong>Sensibilidad $:</strong> {{ empresa.sensibilidad_precio }}</li>
+                    <li><strong>Temporada:</strong> {{ empresa.temporada_clave }}</li>
+                    <li><strong>Proveedor:</strong> {{ empresa.proveedor_actual }}</li>
+                </ul>
+                <div class="alert alert-light border">
+                    <strong>Objetivo:</strong><br> {{ empresa.objetivo_principal }}
+                </div>
+
+                <div class="d-grid gap-2 mt-3">
+                    <a href="{{ url_for('editar_empresa', id=empresa.id) }}" class="btn btn-outline-primary">
+                        ✏️ Editar Información
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Related Contacts -->
+    <!-- Related Contacts (Existing code remains, keeping it clean) -->
     <div class="col-md-8">
-        <div class="card shadow-sm">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Contactos Asociados</h5>
 
-                <!-- ADD CONTACT BUTTON IMPLEMENTED (Passes the company ID) -->
-                <a href="{{ url_for('crear_contacto', empresa_id=empresa.id) }}" class="btn btn-sm btn-success">
-                    + Agregar Contacto
-                </a>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Puesto</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for contacto in empresa.contactos %}
-                    <tr>
-                        <td>{{ contacto.nombre }} {{ contacto.apellido }}</td>
-                        <td>{{ contacto.puesto }}</td>
-                        <td>{{ contacto.email }}</td>
-                        <td>{{ contacto.telefono }}</td>
-                    </tr>
-                    <td>
-                        <a href="{{ url_for('editar_contacto', id=contacto.id) }}"
-                           class="btn btn-sm btn-outline-secondary">
-                            ✏️
-                        </a>
-                    </td>
-                    {% else %}
-                    <tr>
-                        <td colspan="4" class="text-muted text-center py-3">
-                            No hay contactos registrados para esta empresa.
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+    <!-- TABS NAVIGATION -->
+    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="contactos-tab" data-bs-toggle="tab" data-bs-target="#contactos" type="button" role="tab">Contactos</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="seguimiento-tab" data-bs-toggle="tab" data-bs-target="#seguimiento" type="button" role="tab">Seguimiento</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="eventos-tab" data-bs-toggle="tab" data-bs-target="#eventos" type="button" role="tab">Eventos</button>
+        </li>
+    </ul>
+
+    <!-- TABS CONTENT -->
+    <div class="tab-content" id="myTabContent">
+
+        <!-- 1. TAB CONTACTOS -->
+        <div class="tab-pane fade show active" id="contactos" role="tabpanel">
+            <div class="card shadow-sm border-top-0">
+                <div class="card-header bg-white d-flex justify-content-between">
+                    <h5 class="mb-0">Contactos</h5>
+                    <a href="{{ url_for('crear_contacto', empresa_id=empresa.id) }}" class="btn btn-sm btn-success">+ Nuevo Contacto</a>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Puesto</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contacto in empresa.contactos %}
+                            <tr>
+                                <td>{{ contacto.nombre }} {{ contacto.apellido }}</td>
+                                <td>{{ contacto.puesto }}</td>
+                                <td>
+                                    <a href="{{ url_for('ver_contacto', id=contacto.id) }}" class="btn btn-sm btn-outline-info">👁️</a>
+                                    <a href="{{ url_for('editar_contacto', id=contacto.id) }}" class="btn btn-sm btn-outline-secondary">✏️</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="3" class="text-center py-3">No hay contactos.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        <!-- 2. TAB SEGUIMIENTO -->
+        <div class="tab-pane fade" id="seguimiento" role="tabpanel">
+            <div class="card shadow-sm border-top-0">
+                <div class="card-header bg-white d-flex justify-content-between">
+                    <h5 class="mb-0">Historial de Seguimiento</h5>
+                    <a href="{{ url_for('crear_seguimiento', empresa_id=empresa.id) }}" class="btn btn-sm btn-success">+ Registrar Actividad</a>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-striped mb-0 text-sm">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo</th>
+                                <th>Resultado</th>
+                                <th>Responsable</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for seg in empresa.seguimientos %}
+                            <tr>
+                                <td>{{ seg.fecha_contacto }}</td>
+                                <td>
+                                    <span class="badge bg-light text-dark border">{{ seg.tipo_contacto }}</span>
+                                    <br><small class="text-muted">{{ seg.etapa_venta }}</small>
+                                </td>
+                                <td>{{ seg.resultado }}</td>
+                                <td>{{ seg.responsable }}</td>
+                                <td>
+                                    <a href="{{ url_for('editar_seguimiento', id=seg.id) }}" class="btn btn-sm btn-outline-secondary py-0">✏️</a>
+                                    <a href="{{ url_for('eliminar_seguimiento', id=seg.id) }}" class="btn btn-sm btn-outline-danger py-0" onclick="return confirm('¿Eliminar registro?')">🗑️</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="5" class="text-center py-3">No hay seguimiento registrado.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. TAB EVENTOS -->
+        <div class="tab-pane fade" id="eventos" role="tabpanel">
+            <div class="card shadow-sm border-top-0">
+                <div class="card-header bg-white d-flex justify-content-between">
+                    <h5 class="mb-0">Eventos</h5>
+                    <a href="{{ url_for('crear_evento', empresa_id=empresa.id) }}" class="btn btn-sm btn-success">+ Nuevo Evento</a>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Evento</th>
+                                <th>Estatus</th>
+                                <th>Presupuesto</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for evt in empresa.eventos %}
+                            <tr>
+                                <td>{{ evt.fecha_evento }}</td>
+                                <td><strong>{{ evt.nombre_evento }}</strong><br><small>{{ evt.tipo_evento }}</small></td>
+                                <td>{{ evt.estatus_evento }}</td>
+                                <td>${{ evt.presupuesto }}</td>
+                                <td>
+                                    <a href="{{ url_for('editar_evento', id=evt.id) }}" class="btn btn-sm btn-outline-secondary py-0">✏️</a>
+                                    <a href="{{ url_for('eliminar_evento', id=evt.id) }}" class="btn btn-sm btn-outline-danger py-0" onclick="return confirm('¿Eliminar evento?')">🗑️</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="5" class="text-center py-3">No hay eventos registrados.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
+</div>
 </div>
 {% endblock %}

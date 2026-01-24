@@ -1,0 +1,23 @@
+<h3>Seguimientos: {{ empresa.nombre }}</h3>
+<a href="{{ url_for('crear_seguimiento', empresa_id=empresa.id) }}">[+ Nuevo Seguimiento]</a>
+<table border="1">
+    <tr>
+        <th>Fecha</th>
+        <th>Tipo</th>
+        <th>Etapa</th>
+        <th>Próximo Paso</th>
+        <th>Acciones</th>
+    </tr>
+    {% for s in seguimientos %}
+    <tr>
+        <td>{{ s.fecha_contacto }}</td>
+        <td>{{ s.tipo_contacto }}</td>
+        <td>{{ s.etapa_venta }}</td>
+        <td>{{ s.proximo_paso }} ({{ s.fecha_proximo_contacto }})</td>
+        <td>
+            <a href="{{ url_for('editar_seguimiento', id=s.id) }}">Editar</a> |
+            <a href="{{ url_for('borrar_seguimiento', id=s.id) }}" onclick="return confirm('¿Borrar?')">Eliminar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

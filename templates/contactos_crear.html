@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="card shadow-sm">
             <div class="card-header bg-white">
                 <h4>Registrar Nuevo Contacto</h4>
@@ -10,25 +10,30 @@
             <div class="card-body">
                 <form method="POST" action="{{ url_for('crear_contacto') }}">
 
-                    <!-- Select Company -->
-                    <div class="mb-3">
-                        <label class="form-label">Empresa Perteneciente</label>
-                        <select name="empresa_id" class="form-select" required>
-                            <option value="" disabled {% if not preselected_id %}selected{% endif %}>Selecciona una
-                                empresa...
-                            </option>
-
-                            {% for empresa in empresas %}
-                            <!-- Logic to check if this is the pre-selected company -->
-                            <option value="{{ empresa.id }}"
-                                    {% if preselected_id and preselected_id|int== empresa.id %}selected{% endif %}>
-                                {{ empresa.nombre_comercial }}
-                            </option>
-                            {% endfor %}
-                        </select>
-                        <div class="form-text">El contacto debe estar asociado a una empresa existente.</div>
+                    <!-- 1. Empresa and Main Contact Checkbox -->
+                    <div class="row mb-3 align-items-end">
+                        <div class="col-md-8">
+                            <label class="form-label">Empresa Perteneciente</label>
+                            <select name="empresa_id" class="form-select" required>
+                                <option value="" disabled {% if not preselected_id %}selected{% endif %}>Selecciona...</option>
+                                {% for empresa in empresas %}
+                                    <option value="{{ empresa.id }}" {% if preselected_id and preselected_id|int == empresa.id %}selected{% endif %}>
+                                        {{ empresa.nombre_comercial }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="contacto_principal" id="principalCheck">
+                                <label class="form-check-label fw-bold" for="principalCheck">
+                                    ⭐ Contacto Principal
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
+                    <!-- 2. Basic Info -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Nombre</label>
@@ -42,7 +47,7 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Puesto / Cargo</label>
+                            <label class="form-label">Puesto</label>
                             <input type="text" name="puesto" class="form-control">
                         </div>
                         <div class="col-md-6">
@@ -51,14 +56,50 @@
                         </div>
                     </div>
 
+                    <!-- 3. Contact Details -->
+                    <h6 class="mt-4 mb-3 text-muted border-bottom pb-2">Datos de Contacto</h6>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Email</label>
                             <input type="email" name="email" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Teléfono</label>
+                            <label class="form-label">Teléfono (Oficina)</label>
                             <input type="text" name="telefono" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">WhatsApp (Móvil)</label>
+                            <input type="text" name="whatsapp" class="form-control" placeholder="+52...">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">LinkedIn URL</label>
+                            <input type="text" name="linkedin" class="form-control" placeholder="https://linkedin.com/in/...">
+                        </div>
+                    </div>
+
+                    <!-- 4. Strategic Info -->
+                    <h6 class="mt-4 mb-3 text-muted border-bottom pb-2">Perfil Estratégico</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nivel de Decisión</label>
+                            <select name="nivel_decision" class="form-select">
+                                <option value="">Selecciona...</option>
+                                <option value="Alto (Tomador de decisión)">Alto (Tomador de decisión)</option>
+                                <option value="Medio (Influenciador)">Medio (Influenciador)</option>
+                                <option value="Bajo (Usuario)">Bajo (Usuario)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Preferencia de Contacto</label>
+                            <select name="preferencia_contacto" class="form-select">
+                                <option value="Email">Email</option>
+                                <option value="Llamada">Llamada</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Reunión">Reunión Presencial</option>
+                            </select>
                         </div>
                     </div>
 
@@ -67,9 +108,9 @@
                         <textarea name="comentarios" class="form-control" rows="2"></textarea>
                     </div>
 
-                    <div class="d-grid gap-2">
+                    <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary">Guardar Contacto</button>
-                        <a href="{{ url_for('ver_contactos') }}" class="btn btn-secondary">Cancelar</a>
+                        <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
                     </div>
                 </form>
             </div>

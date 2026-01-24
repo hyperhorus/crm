@@ -2,16 +2,19 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="card shadow-sm">
             <div class="card-header bg-white">
                 <h4>Registrar Nueva Empresa</h4>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ url_for('crear_empresa') }}">
+
+                    <!-- SECTION 1: DATOS GENERALES -->
+                    <h6 class="text-primary mb-3">Datos Generales</h6>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Nombre Comercial</label>
+                            <label class="form-label">Nombre Comercial *</label>
                             <input type="text" name="nombre_comercial" class="form-control" required>
                         </div>
                         <div class="col-md-6">
@@ -22,25 +25,107 @@
 
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label class="form-label">Giro</label>
+                            <label class="form-label">Giro / Industria</label>
                             <input type="text" name="giro" class="form-control">
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tamaño Empresa</label>
+                            <select name="tamano_empresa" class="form-select">
+                                <option value="">Selecciona...</option>
+                                <option value="Micro (1-10)">Micro (1-10)</option>
+                                <option value="Pequeña (11-50)">Pequeña (11-50)</option>
+                                <option value="Mediana (51-200)">Mediana (51-200)</option>
+                                <option value="Grande (200+)">Grande (200+)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo de Cliente</label>
+                            <select name="tipo_cliente" class="form-select">
+                                <option value="Final">Usuario Final</option>
+                                <option value="Distribuidor">Distribuidor</option>
+                                <option value="Gobierno">Gobierno</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Sitio Web</label>
+                            <input type="text" name="sitio_web" class="form-control" placeholder="www.ejemplo.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">LinkedIn Empresa</label>
+                            <input type="text" name="linkedin_empresa" class="form-control" placeholder="linkedin.com/company/...">
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: UBICACIÓN -->
+                    <h6 class="text-primary mt-4 mb-3">Ubicación</h6>
+                    <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="form-label">Ciudad</label>
                             <input type="text" name="ciudad" class="form-control">
                         </div>
                         <div class="col-md-4">
+                            <label class="form-label">Estado</label>
+                            <input type="text" name="estado" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">País</label>
+                            <input type="text" name="pais" class="form-control" value="México">
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: PERFIL ESTRATÉGICO -->
+                    <h6 class="text-primary mt-4 mb-3">Perfil Comercial</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
                             <label class="form-label">Presupuesto Estimado</label>
-                            <input type="number" step="0.01" name="presupuesto" class="form-control">
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" step="0.01" name="presupuesto" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Prioridad de Compra</label>
+                            <select name="prioridad_compra" class="form-select">
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Sensibilidad al Precio</label>
+                            <select name="sensibilidad_precio" class="form-select">
+                                <option value="Baja">Baja (Busca Calidad)</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta (Busca Precio)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Proveedor Actual</label>
+                            <input type="text" name="proveedor_actual" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Temporada Clave</label>
+                            <input type="text" name="temporada_clave" class="form-control" placeholder="Ej. Q4, Navidad, Todo el año">
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Sitio Web</label>
-                        <input type="text" name="sitio_web" class="form-control" placeholder="www.ejemplo.com">
+                        <label class="form-label">Objetivo Principal</label>
+                        <input type="text" name="objetivo_principal" class="form-control" placeholder="Ej. Reducir costos, Innovación...">
                     </div>
 
-                    <div class="d-grid gap-2">
+                    <div class="mb-3">
+                        <label class="form-label">Comentarios</label>
+                        <textarea name="comentarios" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary">Guardar Empresa</button>
                         <a href="{{ url_for('ver_empresas') }}" class="btn btn-secondary">Cancelar</a>
                     </div>

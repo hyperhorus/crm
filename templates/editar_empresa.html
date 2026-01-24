@@ -2,14 +2,15 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="card shadow-sm">
             <div class="card-header bg-white">
                 <h4>Editar Empresa: {{ empresa.nombre_comercial }}</h4>
             </div>
             <div class="card-body">
                 <form method="POST" action="{{ url_for('editar_empresa', id=empresa.id) }}">
-                    
+
+                    <h6 class="text-primary mb-3">Datos Generales</h6>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Nombre Comercial</label>
@@ -27,21 +28,89 @@
                             <input type="text" name="giro" class="form-control" value="{{ empresa.giro }}">
                         </div>
                         <div class="col-md-4">
+                            <label class="form-label">Tamaño</label>
+                            <input type="text" name="tamano_empresa" class="form-control" value="{{ empresa.tamano_empresa }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Estatus (CRM)</label>
+                            <select name="estatus_empresa" class="form-select">
+                                <option value="Prospecto" {% if empresa.estatus_empresa == 'Prospecto' %}selected{% endif %}>Prospecto</option>
+                                <option value="Activo" {% if empresa.estatus_empresa == 'Activo' %}selected{% endif %}>Cliente Activo</option>
+                                <option value="Inactivo" {% if empresa.estatus_empresa == 'Inactivo' %}selected{% endif %}>Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Sitio Web</label>
+                            <input type="text" name="sitio_web" class="form-control" value="{{ empresa.sitio_web }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">LinkedIn</label>
+                            <input type="text" name="linkedin_empresa" class="form-control" value="{{ empresa.linkedin_empresa }}">
+                        </div>
+                    </div>
+
+                    <h6 class="text-primary mt-4 mb-3">Ubicación</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
                             <label class="form-label">Ciudad</label>
                             <input type="text" name="ciudad" class="form-control" value="{{ empresa.ciudad }}">
                         </div>
                         <div class="col-md-4">
+                            <label class="form-label">Estado</label>
+                            <input type="text" name="estado" class="form-control" value="{{ empresa.estado }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">País</label>
+                            <input type="text" name="pais" class="form-control" value="{{ empresa.pais }}">
+                        </div>
+                    </div>
+
+                    <h6 class="text-primary mt-4 mb-3">Perfil Comercial</h6>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
                             <label class="form-label">Presupuesto</label>
                             <input type="number" step="0.01" name="presupuesto" class="form-control" value="{{ empresa.presupuesto_estimado }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Prioridad</label>
+                            <input type="text" name="prioridad_compra" class="form-control" value="{{ empresa.prioridad_compra }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Sensibilidad $</label>
+                            <input type="text" name="sensibilidad_precio" class="form-control" value="{{ empresa.sensibilidad_precio }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Proveedor Actual</label>
+                            <input type="text" name="proveedor_actual" class="form-control" value="{{ empresa.proveedor_actual }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Temporada Clave</label>
+                            <input type="text" name="temporada_clave" class="form-control" value="{{ empresa.temporada_clave }}">
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Sitio Web</label>
-                        <input type="text" name="sitio_web" class="form-control" value="{{ empresa.sitio_web }}">
+                        <label class="form-label">Tipo de Cliente</label>
+                        <input type="text" name="tipo_cliente" class="form-control" value="{{ empresa.tipo_cliente }}">
                     </div>
 
-                    <div class="d-grid gap-2">
+                    <div class="mb-3">
+                        <label class="form-label">Objetivo Principal</label>
+                        <input type="text" name="objetivo_principal" class="form-control" value="{{ empresa.objetivo_principal }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Comentarios</label>
+                        <textarea name="comentarios" class="form-control" rows="3">{{ empresa.comentarios }}</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary">Actualizar Cambios</button>
                         <a href="{{ url_for('detalle_empresa', id=empresa.id) }}" class="btn btn-secondary">Cancelar</a>
                     </div>

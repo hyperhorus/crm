@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h4>
+                    {% if evento %}Editar Evento{% else %}Nuevo Evento{% endif %}
+                </h4>
+                <p class="text-muted mb-0">Empresa: {{ empresa.nombre_comercial }}</p>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre Evento</label>
+                            <input type="text" name="nombre_evento" class="form-control" required
+                                   value="{{ evento.nombre_evento if evento else '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo Evento</label>
+                            <input type="text" name="tipo_evento" class="form-control" placeholder="Ej. Boda, Conferencia..."
+                                   value="{{ evento.tipo_evento if evento else '' }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Fecha Evento</label>
+                            <input type="date" name="fecha_evento" class="form-control" 
+                                   value="{{ evento.fecha_evento if evento else '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Pax (Personas)</label>
+                            <input type="number" name="cantidad_personas" class="form-control" 
+                                   value="{{ evento.cantidad_personas if evento else '' }}">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Presupuesto</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input type="number" step="0.01" name="presupuesto" class="form-control" 
+                                       value="{{ evento.presupuesto if evento else '' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Servicios Requeridos</label>
+                        <input type="text" name="servicios" class="form-control" 
+                               value="{{ evento.servicios if evento else '' }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Estatus</label>
+                        <select name="estatus_evento" class="form-select">
+                            {% set est = evento.estatus_evento if evento else '' %}
+                            <option value="Cotización" {% if est=='Cotización' %}selected{% endif %}>Cotización</option>
+                            <option value="Confirmado" {% if est=='Confirmado' %}selected{% endif %}>Confirmado</option>
+                            <option value="Realizado" {% if est=='Realizado' %}selected{% endif %}>Realizado</option>
+                            <option value="Cancelado" {% if est=='Cancelado' %}selected{% endif %}>Cancelado</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Comentarios</label>
+                        <textarea name="comentarios" class="form-control" rows="3">{{ evento.comentarios if evento else '' }}</textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a href="{{ url_for('detalle_empresa', id=empresa.id) }}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

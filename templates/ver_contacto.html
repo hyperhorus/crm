@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            
+            <!-- Header with Name and Status -->
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">
+                        {{ contacto.nombre }} {{ contacto.apellido }}
+                    </h4>
+                    {% if contacto.contacto_principal %}
+                        <span class="badge bg-warning text-dark">⭐ Contacto Principal</span>
+                    {% endif %}
+                </div>
+                <p class="mb-0 opacity-75">{{ contacto.puesto }} - {{ contacto.empresa.nombre_comercial }}</p>
+            </div>
+
+            <div class="card-body">
+                
+                <!-- Section 1: Contact Methods -->
+                <h6 class="text-primary border-bottom pb-2 mb-3">Medios de Contacto</h6>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><strong>Email:</strong><br> 
+                            {% if contacto.email %}
+                                <a href="mailto:{{ contacto.email }}">{{ contacto.email }}</a>
+                            {% else %} <span class="text-muted">No registrado</span> {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Teléfono Oficina:</strong><br> 
+                            {{ contacto.telefono | formatea_telefono  or 'No registrado' }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>WhatsApp:</strong><br> 
+                            {% if contacto.whatsapp %}
+                                <a href="https://wa.me/{{ contacto.whatsapp }}" target="_blank" class="text-success">
+                                    +52 {{ contacto.whatsapp | formatea_telefono }} ↗
+                                </a>
+                            {% else %} <span class="text-muted">No registrado</span> {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>LinkedIn:</strong><br> 
+                            {% if contacto.linkedin %}
+                                <a href="{{ contacto.linkedin }}" target="_blank" class="text-primary">
+                                    Ver Perfil ↗
+                                </a>
+                            {% else %} <span class="text-muted">No registrado</span> {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Section 2: Corporate Profile -->
+                <h6 class="text-primary border-bottom pb-2 mb-3">Perfil Corporativo</h6>
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <p><strong>Departamento:</strong><br> {{ contacto.departamento or 'N/A' }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Nivel de Decisión:</strong><br> 
+                            <span class="badge bg-secondary">{{ contacto.nivel_decision or 'No definido' }}</span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Preferencia Contacto:</strong><br> {{ contacto.preferencia_contacto or 'N/A' }}</p>
+                    </div>
+                </div>
+
+                <!-- Section 3: Comments -->
+                <h6 class="text-primary border-bottom pb-2 mb-3">Notas y Comentarios</h6>
+                <div class="bg-light p-3 rounded mb-4 border">
+                    {% if contacto.comentarios %}
+                        {{ contacto.comentarios }}
+                    {% else %}
+                        <em class="text-muted">Sin comentarios adicionales.</em>
+                    {% endif %}
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('detalle_empresa', id=contacto.empresa_id) }}" class="btn btn-secondary">
+                        ← Volver a Empresa
+                    </a>
+                    <a href="{{ url_for('editar_contacto', id=contacto.id) }}" class="btn btn-outline-primary">
+                        ✏️ Editar Datos
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
