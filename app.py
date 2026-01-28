@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from config import Config
-from models import db, Empresa, Contacto, Evento, Seguimiento
+from models import db, Empresa, Contacto, Evento, Seguimiento, Giro
 from datetime import date
 
 app = Flask(__name__)
@@ -25,14 +25,41 @@ def ver_empresas():
     return render_template('listado.html', empresas=lista_empresas)
 
 
+# app.py
+
+# Make sure to import Giro
+from models import db, Empresa, Contacto, Seguimiento, Evento, Giro
+
+
 @app.route('/nueva-empresa', methods=['GET', 'POST'])
 def crear_empresa():
     if request.method == 'POST':
         try:
+            # Validate presupuesto
+            presupuesto = request.form.get('presupuesto')
+            if presupuesto:
+                try:
+                    presupuesto_value = float(presupuesto)
+                    if presupuesto_value < 0:
+                        flash('Error: El presupuesto no puede ser negativo', 'danger')
+                        return redirect(url_for('crear_empresa'))
+                except ValueError:
+                    presupuesto_value = 0
+            else:
+                presupuesto_value = 0
+
+            # Handle empty selection
+            giro_seleccionado = request.form.get('giro_id')
+            if not giro_seleccionado or giro_seleccionado == "":
+                giro_seleccionado = None
+
             nueva = Empresa(
                 nombre_comercial=request.form['nombre_comercial'],
                 razon_social=request.form.get('razon_social'),
-                giro=request.form.get('giro'),
+
+                # --- CHANGED: SAVE ID INSTEAD OF TEXT ---
+                giro_id=giro_seleccionado,
+
                 tamano_empresa=request.form.get('tamano_empresa'),
                 ciudad=request.form.get('ciudad'),
                 estado=request.form.get('estado'),
@@ -46,7 +73,7 @@ def crear_empresa():
                 prioridad_compra=request.form.get('prioridad_compra'),
                 sensibilidad_precio=request.form.get('sensibilidad_precio'),
                 objetivo_principal=request.form.get('objetivo_principal'),
-                estatus_empresa='Prospecto', # Default status
+                estatus_empresa='Prospecto',
                 comentarios=request.form.get('comentarios')
             )
 
@@ -57,7 +84,10 @@ def crear_empresa():
         except Exception as e:
             return f"Error al guardar: {e}"
 
-    return render_template('crear.html')
+    # --- GET REQUEST: FETCH GIROS FROM DB ---
+    lista_giros = Giro.query.order_by(Giro.descripcion).all()
+
+    return render_template('crear.html', giros=lista_giros)
 
 
 @app.route('/empresa/<int:id>')
@@ -120,7 +150,8 @@ def ver_contacto(id):
     contacto = Contacto.query.get_or_404(id)
     return render_template('ver_contacto.html', contacto=contacto)
 
-# --- NEW ROUTE: EDITAR EMPRESA ---
+# app.py
+
 @app.route('/empresa/editar/<int:id>', methods=['GET', 'POST'])
 def editar_empresa(id):
     empresa = Empresa.query.get_or_404(id)
@@ -129,7 +160,11 @@ def editar_empresa(id):
         try:
             empresa.nombre_comercial = request.form['nombre_comercial']
             empresa.razon_social = request.form.get('razon_social')
-            empresa.giro = request.form.get('giro')
+
+            # --- CHANGED: SAVE GIRO_ID INSTEAD OF TEXT ---
+            giro_seleccionado = request.form.get('giro_id')
+            empresa.giro_id = giro_seleccionado if giro_seleccionado else None
+
             empresa.tamano_empresa = request.form.get('tamano_empresa')
             empresa.ciudad = request.form.get('ciudad')
             empresa.estado = request.form.get('estado')
@@ -155,7 +190,11 @@ def editar_empresa(id):
         except Exception as e:
             return f"Error al actualizar: {e}"
 
-    return render_template('editar_empresa.html', empresa=empresa)
+    # --- GET REQUEST: FETCH GIROS FROM DB ---
+    lista_giros = Giro.query.order_by(Giro.descripcion).all()
+
+    return render_template('editar_empresa.html', empresa=empresa, giros=lista_giros)
+
 
 @app.route('/contacto/editar/<int:id>', methods=['GET', 'POST'])
 def editar_contacto(id):
@@ -189,6 +228,7 @@ def editar_contacto(id):
 
     empresas = Empresa.query.order_by(Empresa.nombre_comercial).all()
     return render_template('contactos_editar.html', contacto=contacto, empresas=empresas)
+
 
 #####Formateo del telefono
 # app.py
@@ -322,6 +362,8 @@ def eliminar_evento(id):
     db.session.commit()
     flash('Evento eliminado')
     return redirect(url_for('detalle_empresa', id=empresa_id))
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

@@ -19,7 +19,7 @@ class Empresa(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nombre_comercial = db.Column(db.String(150), nullable=False)
     razon_social = db.Column(db.String(200))
-    giro = db.Column(db.String(100))
+    giro_id = db.Column(db.Integer, db.ForeignKey('giro.cat_id'))
     tamano_empresa = db.Column(db.String(50))  # New
     ciudad = db.Column(db.String(100))
     estado = db.Column(db.String(100))  # New
@@ -42,6 +42,7 @@ class Empresa(db.Model):
     intereses = db.relationship('Interes', backref='empresa', lazy=True)
     seguimientos = db.relationship('Seguimiento', backref='empresa', lazy=True)
     eventos = db.relationship('Evento', backref='empresa', lazy=True)
+    giro_rel = db.relationship('Giro', backref='empresas_asociadas')
 
     def to_dict(self):
         return {
@@ -126,3 +127,10 @@ class Evento(db.Model):
     presupuesto = db.Column(db.Numeric(12, 2))
     estatus_evento = db.Column(db.String(50))
     comentarios = db.Column(db.Text)
+
+# 1. NEW CLASS FOR GIRO
+class Giro(db.Model):
+    __tablename__ = 'giro'
+
+    cat_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    descripcion = db.Column(db.String(100), nullable=False)

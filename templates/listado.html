@@ -13,9 +13,11 @@
                 <tr>
                     <th>ID</th>
                     <th>Nombre Comercial</th>
+                    <th>Giro</th>
                     <th>Ciudad</th>
                     <th>Estatus</th>
                     <th>Acciones</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -23,6 +25,7 @@
                 <tr>
                     <td>{{ empresa.id }}</td>
                     <td><strong>{{ empresa.nombre_comercial }}</strong></td>
+                    <td>{{ empresa.giro_rel.descripcion }}</td>
                     <td>{{ empresa.ciudad }}</td>
                     <td>
                         <span class="badge bg-info text-dark">{{ empresa.estatus_empresa }}</span>

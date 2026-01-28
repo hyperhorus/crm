@@ -14,29 +14,45 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Nombre Comercial</label>
-                            <input type="text" name="nombre_comercial" class="form-control" value="{{ empresa.nombre_comercial }}" required>
+                            <input type="text" name="nombre_comercial" class="form-control"
+                                   value="{{ empresa.nombre_comercial }}" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Razón Social</label>
-                            <input type="text" name="razon_social" class="form-control" value="{{ empresa.razon_social }}">
+                            <input type="text" name="razon_social" class="form-control"
+                                   value="{{ empresa.razon_social }}">
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label class="form-label">Giro</label>
-                            <input type="text" name="giro" class="form-control" value="{{ empresa.giro }}">
+                            <label class="form-label">Giro / Industria</label>
+
+                            <!-- CHANGED: Select Dropdown with Pre-selected Value -->
+                            <select name="giro_id" class="form-select">
+                                <option value="">Selecciona un giro...</option>
+                                {% for giro in giros %}
+                                <option value="{{ giro.cat_id }}"
+                                        {% if empresa.giro_id== giro.cat_id %}selected{% endif %}>
+                                    {{ giro.descripcion }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Tamaño</label>
-                            <input type="text" name="tamano_empresa" class="form-control" value="{{ empresa.tamano_empresa }}">
+                            <input type="text" name="tamano_empresa" class="form-control"
+                                   value="{{ empresa.tamano_empresa }}">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Estatus (CRM)</label>
                             <select name="estatus_empresa" class="form-select">
-                                <option value="Prospecto" {% if empresa.estatus_empresa == 'Prospecto' %}selected{% endif %}>Prospecto</option>
-                                <option value="Activo" {% if empresa.estatus_empresa == 'Activo' %}selected{% endif %}>Cliente Activo</option>
-                                <option value="Inactivo" {% if empresa.estatus_empresa == 'Inactivo' %}selected{% endif %}>Inactivo</option>
+                                <option value="Prospecto" {% if empresa.estatus_empresa==
+                                'Prospecto' %}selected{% endif %}>Prospecto</option>
+                                <option value="Activo" {% if empresa.estatus_empresa==
+                                'Activo' %}selected{% endif %}>Cliente Activo</option>
+                                <option value="Inactivo" {% if empresa.estatus_empresa==
+                                'Inactivo' %}selected{% endif %}>Inactivo</option>
                             </select>
                         </div>
                     </div>
@@ -48,7 +64,8 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">LinkedIn</label>
-                            <input type="text" name="linkedin_empresa" class="form-control" value="{{ empresa.linkedin_empresa }}">
+                            <input type="text" name="linkedin_empresa" class="form-control"
+                                   value="{{ empresa.linkedin_empresa }}">
                         </div>
                     </div>
 
@@ -58,9 +75,76 @@
                             <label class="form-label">Ciudad</label>
                             <input type="text" name="ciudad" class="form-control" value="{{ empresa.ciudad }}">
                         </div>
+                        <!-- In editar_empresa.html, update the Estado field -->
                         <div class="col-md-4">
                             <label class="form-label">Estado</label>
-                            <input type="text" name="estado" class="form-control" value="{{ empresa.estado }}">
+                            <select name="estado" class="form-select">
+                                <option value="">Selecciona un estado...</option>
+                                <option value="Aguascalientes" {% if empresa.estado==
+                                'Aguascalientes' %}selected{% endif %}>Aguascalientes</option>
+                                <option value="Baja California" {% if empresa.estado==
+                                'Baja California' %}selected{% endif %}>Baja California</option>
+                                <option value="Baja California Sur" {% if empresa.estado==
+                                'Baja California Sur' %}selected{% endif %}>Baja California Sur</option>
+                                <option value="Campeche" {% if empresa.estado==
+                                'Campeche' %}selected{% endif %}>Campeche</option>
+                                <option value="Chiapas" {% if empresa.estado==
+                                'Chiapas' %}selected{% endif %}>Chiapas</option>
+                                <option value="Chihuahua" {% if empresa.estado==
+                                'Chihuahua' %}selected{% endif %}>Chihuahua</option>
+                                <option value="Ciudad de México" {% if empresa.estado==
+                                'Ciudad de México' %}selected{% endif %}>Ciudad de México</option>
+                                <option value="Coahuila" {% if empresa.estado==
+                                'Coahuila' %}selected{% endif %}>Coahuila</option>
+                                <option value="Colima" {% if empresa.estado==
+                                'Colima' %}selected{% endif %}>Colima</option>
+                                <option value="Durango" {% if empresa.estado==
+                                'Durango' %}selected{% endif %}>Durango</option>
+                                <option value="Estado de México" {% if empresa.estado==
+                                'Estado de México' %}selected{% endif %}>Estado de México</option>
+                                <option value="Guanajuato" {% if empresa.estado==
+                                'Guanajuato' %}selected{% endif %}>Guanajuato</option>
+                                <option value="Guerrero" {% if empresa.estado==
+                                'Guerrero' %}selected{% endif %}>Guerrero</option>
+                                <option value="Hidalgo" {% if empresa.estado==
+                                'Hidalgo' %}selected{% endif %}>Hidalgo</option>
+                                <option value="Jalisco" {% if empresa.estado==
+                                'Jalisco' %}selected{% endif %}>Jalisco</option>
+                                <option value="Michoacán" {% if empresa.estado==
+                                'Michoacán' %}selected{% endif %}>Michoacán</option>
+                                <option value="Morelos" {% if empresa.estado==
+                                'Morelos' %}selected{% endif %}>Morelos</option>
+                                <option value="Nayarit" {% if empresa.estado==
+                                'Nayarit' %}selected{% endif %}>Nayarit</option>
+                                <option value="Nuevo León" {% if empresa.estado==
+                                'Nuevo León' %}selected{% endif %}>Nuevo León</option>
+                                <option value="Oaxaca" {% if empresa.estado==
+                                'Oaxaca' %}selected{% endif %}>Oaxaca</option>
+                                <option value="Puebla" {% if empresa.estado==
+                                'Puebla' %}selected{% endif %}>Puebla</option>
+                                <option value="Querétaro" {% if empresa.estado==
+                                'Querétaro' %}selected{% endif %}>Querétaro</option>
+                                <option value="Quintana Roo" {% if empresa.estado==
+                                'Quintana Roo' %}selected{% endif %}>Quintana Roo</option>
+                                <option value="San Luis Potosí" {% if empresa.estado==
+                                'San Luis Potosí' %}selected{% endif %}>San Luis Potosí</option>
+                                <option value="Sinaloa" {% if empresa.estado==
+                                'Sinaloa' %}selected{% endif %}>Sinaloa</option>
+                                <option value="Sonora" {% if empresa.estado==
+                                'Sonora' %}selected{% endif %}>Sonora</option>
+                                <option value="Tabasco" {% if empresa.estado==
+                                'Tabasco' %}selected{% endif %}>Tabasco</option>
+                                <option value="Tamaulipas" {% if empresa.estado==
+                                'Tamaulipas' %}selected{% endif %}>Tamaulipas</option>
+                                <option value="Tlaxcala" {% if empresa.estado==
+                                'Tlaxcala' %}selected{% endif %}>Tlaxcala</option>
+                                <option value="Veracruz" {% if empresa.estado==
+                                'Veracruz' %}selected{% endif %}>Veracruz</option>
+                                <option value="Yucatán" {% if empresa.estado==
+                                'Yucatán' %}selected{% endif %}>Yucatán</option>
+                                <option value="Zacatecas" {% if empresa.estado==
+                                'Zacatecas' %}selected{% endif %}>Zacatecas</option>
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">País</label>
@@ -72,26 +156,31 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label class="form-label">Presupuesto</label>
-                            <input type="number" step="0.01" name="presupuesto" class="form-control" value="{{ empresa.presupuesto_estimado }}">
+                            <input type="number" step="0.01" name="presupuesto" class="form-control"
+                                   value="{{ empresa.presupuesto_estimado }}">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Prioridad</label>
-                            <input type="text" name="prioridad_compra" class="form-control" value="{{ empresa.prioridad_compra }}">
+                            <input type="text" name="prioridad_compra" class="form-control"
+                                   value="{{ empresa.prioridad_compra }}">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Sensibilidad $</label>
-                            <input type="text" name="sensibilidad_precio" class="form-control" value="{{ empresa.sensibilidad_precio }}">
+                            <input type="text" name="sensibilidad_precio" class="form-control"
+                                   value="{{ empresa.sensibilidad_precio }}">
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Proveedor Actual</label>
-                            <input type="text" name="proveedor_actual" class="form-control" value="{{ empresa.proveedor_actual }}">
+                            <input type="text" name="proveedor_actual" class="form-control"
+                                   value="{{ empresa.proveedor_actual }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Temporada Clave</label>
-                            <input type="text" name="temporada_clave" class="form-control" value="{{ empresa.temporada_clave }}">
+                            <input type="text" name="temporada_clave" class="form-control"
+                                   value="{{ empresa.temporada_clave }}">
                         </div>
                     </div>
 
@@ -102,7 +191,8 @@
 
                     <div class="mb-3">
                         <label class="form-label">Objetivo Principal</label>
-                        <input type="text" name="objetivo_principal" class="form-control" value="{{ empresa.objetivo_principal }}">
+                        <input type="text" name="objetivo_principal" class="form-control"
+                               value="{{ empresa.objetivo_principal }}">
                     </div>
 
                     <div class="mb-3">
