@@ -15,16 +15,18 @@
                             <label class="form-label">Empresa</label>
                             <select name="empresa_id" class="form-select" required>
                                 {% for empresa in empresas %}
-                                    <option value="{{ empresa.id }}" {% if empresa.id == contacto.empresa_id %}selected{% endif %}>
-                                        {{ empresa.nombre_comercial }}
-                                    </option>
+                                <option value="{{ empresa.id }}" {% if empresa.id== contacto.empresa_id %}selected{%
+                                        endif %}>
+                                    {{ empresa.nombre_comercial }}
+                                </option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="col-md-4">
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="contacto_principal" id="principalCheck"
-                                    {% if contacto.contacto_principal %}checked{% endif %}>
+                                <input class="form-check-input" type="checkbox" name="contacto_principal"
+                                       id="principalCheck"
+                                       {% if contacto.contacto_principal %}checked{% endif %}>
                                 <label class="form-check-label fw-bold" for="principalCheck">
                                     ⭐ Contacto Principal
                                 </label>
@@ -32,27 +34,39 @@
                         </div>
                     </div>
 
+                    <!-- In contactos_editar.html, update the nombre and apellido fields -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" value="{{ contacto.nombre }}" required>
+                            <input type="text"
+                                   name="nombre"
+                                   id="nombre"
+                                   class="form-control"
+                                   value="{{ contacto.nombre }}"
+                                   required
+                                   pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-']+"
+                                   title="Solo se permiten letras, espacios, guiones y apostrofes">
+                            <div class="invalid-feedback">
+                                Solo se permiten letras, espacios, guiones (-) y apostrofes (')
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Apellido</label>
-                            <input type="text" name="apellido" class="form-control" value="{{ contacto.apellido }}" required>
+                            <input type="text"
+                                   name="apellido"
+                                   id="apellido"
+                                   class="form-control"
+                                   value="{{ contacto.apellido }}"
+                                   required
+                                   pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-']+"
+                                   title="Solo se permiten letras, espacios, guiones y apostrofes">
+                            <div class="invalid-feedback">
+                                Solo se permiten letras, espacios, guiones (-) y apostrofes (')
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Puesto</label>
-                            <input type="text" name="puesto" class="form-control" value="{{ contacto.puesto }}">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Departamento</label>
-                            <input type="text" name="departamento" class="form-control" value="{{ contacto.departamento }}">
-                        </div>
-                    </div>
+                    <!-- Add the same JavaScript validation script at the end of the template -->
 
                     <h6 class="mt-4 mb-3 text-muted border-bottom pb-2">Datos de Contacto</h6>
                     <div class="row mb-3">
@@ -83,18 +97,25 @@
                             <label class="form-label">Nivel de Decisión</label>
                             <select name="nivel_decision" class="form-select">
                                 <option value="">Selecciona...</option>
-                                <option value="Alto (Tomador de decisión)" {% if contacto.nivel_decision == 'Alto (Tomador de decisión)' %}selected{% endif %}>Alto</option>
-                                <option value="Medio (Influenciador)" {% if contacto.nivel_decision == 'Medio (Influenciador)' %}selected{% endif %}>Medio</option>
-                                <option value="Bajo (Usuario)" {% if contacto.nivel_decision == 'Bajo (Usuario)' %}selected{% endif %}>Bajo</option>
+                                <option value="Alto (Tomador de decisión)" {% if contacto.nivel_decision==
+                                'Alto (Tomador de decisión)' %}selected{% endif %}>Alto</option>
+                                <option value="Medio (Influenciador)" {% if contacto.nivel_decision==
+                                'Medio (Influenciador)' %}selected{% endif %}>Medio</option>
+                                <option value="Bajo (Usuario)" {% if contacto.nivel_decision==
+                                'Bajo (Usuario)' %}selected{% endif %}>Bajo</option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Preferencia de Contacto</label>
                             <select name="preferencia_contacto" class="form-select">
-                                <option value="Email" {% if contacto.preferencia_contacto == 'Email' %}selected{% endif %}>Email</option>
-                                <option value="Llamada" {% if contacto.preferencia_contacto == 'Llamada' %}selected{% endif %}>Llamada</option>
-                                <option value="WhatsApp" {% if contacto.preferencia_contacto == 'WhatsApp' %}selected{% endif %}>WhatsApp</option>
-                                <option value="Reunión" {% if contacto.preferencia_contacto == 'Reunión' %}selected{% endif %}>Reunión</option>
+                                <option value="Email" {% if contacto.preferencia_contacto==
+                                'Email' %}selected{% endif %}>Email</option>
+                                <option value="Llamada" {% if contacto.preferencia_contacto==
+                                'Llamada' %}selected{% endif %}>Llamada</option>
+                                <option value="WhatsApp" {% if contacto.preferencia_contacto==
+                                'WhatsApp' %}selected{% endif %}>WhatsApp</option>
+                                <option value="Reunión" {% if contacto.preferencia_contacto==
+                                'Reunión' %}selected{% endif %}>Reunión</option>
                             </select>
                         </div>
                     </div>

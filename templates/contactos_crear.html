@@ -8,7 +8,7 @@
                 <h4>Registrar Nuevo Contacto</h4>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ url_for('crear_contacto') }}">
+                <form method="POST" action="{{ url_for('crear_contacto') }}" id="contactoForm">
 
                     <!-- 1. Empresa and Main Contact Checkbox -->
                     <div class="row mb-3 align-items-end">
@@ -33,17 +33,37 @@
                         </div>
                     </div>
 
-                    <!-- 2. Basic Info -->
+                    <!-- 2. Basic Info WITH VALIDATION -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" required>
+                            <input type="text"
+                                   name="nombre"
+                                   id="nombre"
+                                   class="form-control"
+                                   required
+                                   pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-']+"
+                                   title="Solo se permiten letras, espacios, guiones y apostrofes">
+                            <div class="invalid-feedback">
+                                Solo se permiten letras, espacios, guiones (-) y apostrofes (')
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Apellido</label>
-                            <input type="text" name="apellido" class="form-control" required>
+                            <input type="text"
+                                   name="apellido"
+                                   id="apellido"
+                                   class="form-control"
+                                   required
+                                   pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-']+"
+                                   title="Solo se permiten letras, espacios, guiones y apostrofes">
+                            <div class="invalid-feedback">
+                                Solo se permiten letras, espacios, guiones (-) y apostrofes (')
+                            </div>
                         </div>
                     </div>
+
+                    <!-- ... REST OF YOUR EXISTING FIELDS ... -->
 
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -117,4 +137,103 @@
         </div>
     </div>
 </div>
+
+<!-- JAVASCRIPT VALIDATION -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the name fields
+    const nombreField = document.getElementById('nombre');
+    const apellidoField = document.getElementById('apellido');
+    const form = document.getElementById('contactoForm');
+
+    // Allowed characters: letters, spaces, hyphen, apostrophe
+    // Including Spanish accented characters
+    const allowedPattern = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-']*$/;
+
+    // Function to validate a field
+    function validateNameField(field) {
+        const value = field.value;
+
+        if (!allowedPattern.test(value)) {
+            field.classList.add('is-invalid');
+            return false;
+        } else {
+            field.classList.remove('is-invalid');
+            return true;
+        }
+    }
+
+    // Real-time validation for Nombre
+    nombreField.addEventListener('input', function(e) {
+        const currentValue = e.target.value;
+        const lastChar = currentValue[currentValue.length - 1];
+
+        // If the last character typed is invalid, remove it
+        if (lastChar && !allowedPattern.test(lastChar)) {
+            e.target.value = currentValue.slice(0, -1);
+
+            // Show error briefly
+            e.target.classList.add('is-invalid');
+            setTimeout(() => {
+                e.target.classList.remove('is-invalid');
+            }, 2000);
+        }
+    });
+
+    // Real-time validation for Apellido
+    apellidoField.addEventListener('input', function(e) {
+        const currentValue = e.target.value;
+        const lastChar = currentValue[currentValue.length - 1];
+
+        // If the last character typed is invalid, remove it
+        if (lastChar && !allowedPattern.test(lastChar)) {
+            e.target.value = currentValue.slice(0, -1);
+
+            // Show error briefly
+            e.target.classList.add('is-invalid');
+            setTimeout(() => {
+                e.target.classList.remove('is-invalid');
+            }, 2000);
+        }
+    });
+
+    // Prevent paste of invalid content
+    function handlePaste(e) {
+        e.preventDefault();
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const cleanedText = pastedText.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-']/g, '');
+
+        if (cleanedText !== pastedText) {
+            e.target.classList.add('is-invalid');
+            setTimeout(() => {
+                e.target.classList.remove('is-invalid');
+            }, 2000);
+        }
+
+        // Insert only the cleaned text
+        document.execCommand('insertText', false, cleanedText);
+    }
+
+    nombreField.addEventListener('paste', handlePaste);
+    apellidoField.addEventListener('paste', handlePaste);
+
+    // Validate on form submit
+    form.addEventListener('submit', function(e) {
+        const nombreValid = validateNameField(nombreField);
+        const apellidoValid = validateNameField(apellidoField);
+
+        if (!nombreValid || !apellidoValid) {
+            e.preventDefault();
+
+            // Focus on the first invalid field
+            if (!nombreValid) {
+                nombreField.focus();
+            } else if (!apellidoValid) {
+                apellidoField.focus();
+            }
+        }
+    });
+});
+</script>
+
 {% endblock %}

@@ -1,14 +1,19 @@
+import os
+
 from flask import Flask, render_template, request, redirect, url_for, flash
-from config import Config
+from config import Config, config
 from models import db, Empresa, Contacto, Evento, Seguimiento, Giro
 from datetime import date
+from utils.constants import MEXICAN_STATES, COMPANY_SIZES, CLIENT_TYPES, PRIORITY_LEVELS, PRICE_SENSITIVITY
+
+# Get the configuration name from environment variable
+config_name = os.getenv('FLASK_ENV', 'development')
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(config[config_name])
 
 # Initialize DB
 db.init_app(app)
-
 
 @app.route('/')
 def index():
@@ -87,7 +92,13 @@ def crear_empresa():
     # --- GET REQUEST: FETCH GIROS FROM DB ---
     lista_giros = Giro.query.order_by(Giro.descripcion).all()
 
-    return render_template('crear.html', giros=lista_giros)
+    return render_template('crear.html',
+                           giros=lista_giros,
+                           estados=MEXICAN_STATES,
+                           tamanos=COMPANY_SIZES,
+                           tipos_cliente=CLIENT_TYPES,
+                           prioridades=PRIORITY_LEVELS,
+                           sensibilidades_precio=PRICE_SENSITIVITY)
 
 
 @app.route('/empresa/<int:id>')
@@ -193,7 +204,13 @@ def editar_empresa(id):
     # --- GET REQUEST: FETCH GIROS FROM DB ---
     lista_giros = Giro.query.order_by(Giro.descripcion).all()
 
-    return render_template('editar_empresa.html', empresa=empresa, giros=lista_giros)
+    return render_template('crear.html',
+                           giros=lista_giros,
+                           estados=MEXICAN_STATES,
+                           tamanos=COMPANY_SIZES,
+                           tipos_cliente=CLIENT_TYPES,
+                           prioridades=PRIORITY_LEVELS,
+                           sensibilidades_precio=PRICE_SENSITIVITY)
 
 
 @app.route('/contacto/editar/<int:id>', methods=['GET', 'POST'])
@@ -367,4 +384,11 @@ def eliminar_evento(id):
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+
+        # Use host and port from configuration
+    app.run(
+        host=app.config['APP_HOST'],
+        port=app.config['APP_PORT'],
+        debug=app.config['DEBUG']
+    )
+    # app.run(debug=True)

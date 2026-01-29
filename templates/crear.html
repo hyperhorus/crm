@@ -2,8 +2,9 @@
 
 {% block content %}
 <!-- Add Select2 CSS at the top of the content block -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+      rel="stylesheet"/>
 
 <div class="row justify-content-center">
     <div class="col-md-10">
@@ -39,22 +40,24 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <!-- Tamaño Empresa - also cleaner -->
                         <div class="col-md-4">
                             <label class="form-label">Tamaño Empresa</label>
                             <select name="tamano_empresa" class="form-select">
                                 <option value="">Selecciona...</option>
-                                <option value="Micro (1-10)">Micro (1-10)</option>
-                                <option value="Pequeña (11-50)">Pequeña (11-50)</option>
-                                <option value="Mediana (51-200)">Mediana (51-200)</option>
-                                <option value="Grande (200+)">Grande (200+)</option>
+                                {% for value, label in tamanos %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
                             </select>
                         </div>
+
+                        <!-- Tipo de Cliente -->
                         <div class="col-md-4">
                             <label class="form-label">Tipo de Cliente</label>
                             <select name="tipo_cliente" class="form-select">
-                                <option value="Final">Usuario Final</option>
-                                <option value="Distribuidor">Distribuidor</option>
-                                <option value="Gobierno">Gobierno</option>
+                                {% for value, label in tipos_cliente %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -79,43 +82,14 @@
                             <input type="text" name="ciudad" class="form-control">
                         </div>
                         <!-- In templates/crear.html, replace the Estado field -->
+                        <!-- Estado dropdown - much cleaner! -->
                         <div class="col-md-4">
                             <label class="form-label">Estado</label>
-                            <!-- CHANGED: Dropdown with 32 Mexican States -->
                             <select name="estado" class="form-select" id="estado_select">
                                 <option value="">Selecciona un estado...</option>
-                                <option value="Aguascalientes">Aguascalientes</option>
-                                <option value="Baja California">Baja California</option>
-                                <option value="Baja California Sur">Baja California Sur</option>
-                                <option value="Campeche">Campeche</option>
-                                <option value="Chiapas">Chiapas</option>
-                                <option value="Chihuahua">Chihuahua</option>
-                                <option value="Ciudad de México">Ciudad de México</option>
-                                <option value="Coahuila">Coahuila</option>
-                                <option value="Colima">Colima</option>
-                                <option value="Durango">Durango</option>
-                                <option value="Estado de México">Estado de México</option>
-                                <option value="Guanajuato">Guanajuato</option>
-                                <option value="Guerrero">Guerrero</option>
-                                <option value="Hidalgo">Hidalgo</option>
-                                <option value="Jalisco">Jalisco</option>
-                                <option value="Michoacán">Michoacán</option>
-                                <option value="Morelos">Morelos</option>
-                                <option value="Nayarit">Nayarit</option>
-                                <option value="Nuevo León">Nuevo León</option>
-                                <option value="Oaxaca">Oaxaca</option>
-                                <option value="Puebla">Puebla</option>
-                                <option value="Querétaro">Querétaro</option>
-                                <option value="Quintana Roo">Quintana Roo</option>
-                                <option value="San Luis Potosí">San Luis Potosí</option>
-                                <option value="Sinaloa">Sinaloa</option>
-                                <option value="Sonora">Sonora</option>
-                                <option value="Tabasco">Tabasco</option>
-                                <option value="Tamaulipas">Tamaulipas</option>
-                                <option value="Tlaxcala">Tlaxcala</option>
-                                <option value="Veracruz">Veracruz</option>
-                                <option value="Yucatán">Yucatán</option>
-                                <option value="Zacatecas">Zacatecas</option>
+                                {% for estado in estados %}
+                                <option value="{{ estado }}">{{ estado }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -144,20 +118,22 @@
                                 No se permiten numeros negativos
                             </div>
                         </div>
+                        <!-- Prioridad de Compra -->
                         <div class="col-md-4">
                             <label class="form-label">Prioridad de Compra</label>
                             <select name="prioridad_compra" class="form-select">
-                                <option value="Baja">Baja</option>
-                                <option value="Media">Media</option>
-                                <option value="Alta">Alta</option>
+                                {% for value, label in prioridades %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
                             </select>
                         </div>
+                        <!-- Sensibilidad al Precio -->
                         <div class="col-md-4">
                             <label class="form-label">Sensibilidad al Precio</label>
                             <select name="sensibilidad_precio" class="form-select">
-                                <option value="Baja">Baja (Busca Calidad)</option>
-                                <option value="Media">Media</option>
-                                <option value="Alta">Alta (Busca Precio)</option>
+                                {% for value, label in sensibilidades_precio %}
+                                <option value="{{ value }}">{{ label }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -289,22 +265,22 @@
         }
     });
 });
-</script>
-        <!-- Load jQuery (required for Select2) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Load Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    </script>
+    <!-- Load jQuery (required for Select2) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Load Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<!-- Initialize Select2 and other JavaScript -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Select2 for Estado dropdown
-    $('#estado_select').select2({
-        theme: 'bootstrap-5',
-        placeholder: 'Busca o selecciona un estado...',
-        allowClear: true,
-        width: '100%'
-    });
-</script>
+    <!-- Initialize Select2 and other JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Select2 for Estado dropdown
+            $('#estado_select').select2({
+                theme: 'bootstrap-5',
+                placeholder: 'Busca o selecciona un estado...',
+                allowClear: true,
+                width: '100%'
+            });
+    </script>
 
     {% endblock %}

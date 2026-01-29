@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- Add Select2 CSS at the top of the content block -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+      rel="stylesheet"/>
+
 <div class="row justify-content-center">
     <div class="col-md-10">
         <div class="card shadow-sm">
@@ -39,10 +44,17 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <!-- Tamaño with pre-selection -->
                         <div class="col-md-4">
                             <label class="form-label">Tamaño</label>
-                            <input type="text" name="tamano_empresa" class="form-control"
-                                   value="{{ empresa.tamano_empresa }}">
+                            <select name="tamano_empresa" class="form-select">
+                                <option value="">Selecciona...</option>
+                                {% for value, label in tamanos %}
+                                <option value="{{ value }}" {% if empresa.tamano_empresa== value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Estatus (CRM)</label>
@@ -76,74 +88,16 @@
                             <input type="text" name="ciudad" class="form-control" value="{{ empresa.ciudad }}">
                         </div>
                         <!-- In editar_empresa.html, update the Estado field -->
+                        <!-- Estado dropdown with pre-selection -->
                         <div class="col-md-4">
                             <label class="form-label">Estado</label>
-                            <select name="estado" class="form-select">
+                            <select name="estado" class="form-select" id="estado_select">
                                 <option value="">Selecciona un estado...</option>
-                                <option value="Aguascalientes" {% if empresa.estado==
-                                'Aguascalientes' %}selected{% endif %}>Aguascalientes</option>
-                                <option value="Baja California" {% if empresa.estado==
-                                'Baja California' %}selected{% endif %}>Baja California</option>
-                                <option value="Baja California Sur" {% if empresa.estado==
-                                'Baja California Sur' %}selected{% endif %}>Baja California Sur</option>
-                                <option value="Campeche" {% if empresa.estado==
-                                'Campeche' %}selected{% endif %}>Campeche</option>
-                                <option value="Chiapas" {% if empresa.estado==
-                                'Chiapas' %}selected{% endif %}>Chiapas</option>
-                                <option value="Chihuahua" {% if empresa.estado==
-                                'Chihuahua' %}selected{% endif %}>Chihuahua</option>
-                                <option value="Ciudad de México" {% if empresa.estado==
-                                'Ciudad de México' %}selected{% endif %}>Ciudad de México</option>
-                                <option value="Coahuila" {% if empresa.estado==
-                                'Coahuila' %}selected{% endif %}>Coahuila</option>
-                                <option value="Colima" {% if empresa.estado==
-                                'Colima' %}selected{% endif %}>Colima</option>
-                                <option value="Durango" {% if empresa.estado==
-                                'Durango' %}selected{% endif %}>Durango</option>
-                                <option value="Estado de México" {% if empresa.estado==
-                                'Estado de México' %}selected{% endif %}>Estado de México</option>
-                                <option value="Guanajuato" {% if empresa.estado==
-                                'Guanajuato' %}selected{% endif %}>Guanajuato</option>
-                                <option value="Guerrero" {% if empresa.estado==
-                                'Guerrero' %}selected{% endif %}>Guerrero</option>
-                                <option value="Hidalgo" {% if empresa.estado==
-                                'Hidalgo' %}selected{% endif %}>Hidalgo</option>
-                                <option value="Jalisco" {% if empresa.estado==
-                                'Jalisco' %}selected{% endif %}>Jalisco</option>
-                                <option value="Michoacán" {% if empresa.estado==
-                                'Michoacán' %}selected{% endif %}>Michoacán</option>
-                                <option value="Morelos" {% if empresa.estado==
-                                'Morelos' %}selected{% endif %}>Morelos</option>
-                                <option value="Nayarit" {% if empresa.estado==
-                                'Nayarit' %}selected{% endif %}>Nayarit</option>
-                                <option value="Nuevo León" {% if empresa.estado==
-                                'Nuevo León' %}selected{% endif %}>Nuevo León</option>
-                                <option value="Oaxaca" {% if empresa.estado==
-                                'Oaxaca' %}selected{% endif %}>Oaxaca</option>
-                                <option value="Puebla" {% if empresa.estado==
-                                'Puebla' %}selected{% endif %}>Puebla</option>
-                                <option value="Querétaro" {% if empresa.estado==
-                                'Querétaro' %}selected{% endif %}>Querétaro</option>
-                                <option value="Quintana Roo" {% if empresa.estado==
-                                'Quintana Roo' %}selected{% endif %}>Quintana Roo</option>
-                                <option value="San Luis Potosí" {% if empresa.estado==
-                                'San Luis Potosí' %}selected{% endif %}>San Luis Potosí</option>
-                                <option value="Sinaloa" {% if empresa.estado==
-                                'Sinaloa' %}selected{% endif %}>Sinaloa</option>
-                                <option value="Sonora" {% if empresa.estado==
-                                'Sonora' %}selected{% endif %}>Sonora</option>
-                                <option value="Tabasco" {% if empresa.estado==
-                                'Tabasco' %}selected{% endif %}>Tabasco</option>
-                                <option value="Tamaulipas" {% if empresa.estado==
-                                'Tamaulipas' %}selected{% endif %}>Tamaulipas</option>
-                                <option value="Tlaxcala" {% if empresa.estado==
-                                'Tlaxcala' %}selected{% endif %}>Tlaxcala</option>
-                                <option value="Veracruz" {% if empresa.estado==
-                                'Veracruz' %}selected{% endif %}>Veracruz</option>
-                                <option value="Yucatán" {% if empresa.estado==
-                                'Yucatán' %}selected{% endif %}>Yucatán</option>
-                                <option value="Zacatecas" {% if empresa.estado==
-                                'Zacatecas' %}selected{% endif %}>Zacatecas</option>
+                                {% for estado in estados %}
+                                <option value="{{ estado }}" {% if empresa.estado== estado %}selected{% endif %}>
+                                    {{ estado }}
+                                </option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -209,4 +163,22 @@
         </div>
     </div>
 </div>
+
+<!-- Load jQuery (required for Select2) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Load Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Initialize Select2 and other JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize Select2 for Estado dropdown
+        $('#estado_select').select2({
+            theme: 'bootstrap-5',
+            placeholder: 'Busca o selecciona un estado...',
+            allowClear: true,
+            width: '100%'
+        });
+</script>
+
 {% endblock %}
