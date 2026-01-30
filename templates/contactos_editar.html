@@ -66,6 +66,17 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Puesto</label>
+                            <input type="text" name="puesto" value="{{ contacto.puesto }}" class="form-control">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Departamento</label>
+                            <input type="text" name="departamento" value="{{ contacto.departamento }}"class="form-control">
+                        </div>
+                    </div>
+
                     <!-- Add the same JavaScript validation script at the end of the template -->
 
                     <h6 class="mt-4 mb-3 text-muted border-bottom pb-2">Datos de Contacto</h6>
@@ -76,21 +87,22 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Teléfono</label>
-                            <input type="text" name="telefono" class="form-control" value="{{ contacto.telefono }}">
+                            <!-- ADD ID HERE -->
+                            <input type="text" name="telefono" id="telefono" class="form-control" value="{{ contacto.telefono }}">
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">WhatsApp</label>
-                            <input type="text" name="whatsapp" class="form-control" value="{{ contacto.whatsapp }}">
+                            <!-- ADD ID HERE -->
+                            <input type="text" name="whatsapp" id="whatsapp" class="form-control" value="{{ contacto.whatsapp }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">LinkedIn</label>
                             <input type="text" name="linkedin" class="form-control" value="{{ contacto.linkedin }}">
                         </div>
                     </div>
-
                     <h6 class="mt-4 mb-3 text-muted border-bottom pb-2">Perfil Estratégico</h6>
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -134,4 +146,34 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const telefonoField = document.getElementById('telefono');
+    const whatsappField = document.getElementById('whatsapp');
+
+    // Initialize the flag based on the existing data
+    let whatsappManuallyEdited = (whatsappField.value !== '' && whatsappField.value !== telefonoField.value);
+
+    // When user types in the Telefono field
+    telefonoField.addEventListener('input', function() {
+        // Only auto-copy if the WhatsApp field hasn't been manually changed
+        if (!whatsappManuallyEdited) {
+            whatsappField.value = telefonoField.value;
+        }
+    });
+
+    // When user types in the WhatsApp field
+    whatsappField.addEventListener('input', function() {
+        // If the user clears the WhatsApp field, resume auto-copying
+        if (whatsappField.value === '') {
+            whatsappManuallyEdited = false;
+        }
+        // If the user makes it different from the Telefono field, stop auto-copying
+        else if (whatsappField.value !== telefonoField.value) {
+            whatsappManuallyEdited = true;
+        }
+    });
+});
+</script>
+
 {% endblock %}

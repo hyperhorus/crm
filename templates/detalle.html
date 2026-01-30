@@ -95,6 +95,8 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Puesto</th>
+                                <th>Telefono</th>
+                                <th>Email</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -103,6 +105,8 @@
                             <tr>
                                 <td>{{ contacto.nombre }} {{ contacto.apellido }}</td>
                                 <td>{{ contacto.puesto }}</td>
+                                <td>{{ contacto.telefono }}</td>
+                                <td>{{ contacto.email }}</td>
                                 <td>
                                     <a href="{{ url_for('ver_contacto', id=contacto.id) }}" class="btn btn-sm btn-outline-info">👁️</a>
                                     <a href="{{ url_for('editar_contacto', id=contacto.id) }}" class="btn btn-sm btn-outline-secondary">✏️</a>
